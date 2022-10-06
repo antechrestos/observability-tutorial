@@ -4,7 +4,8 @@ services:
   fridge:
     image: observability-tutorial-fridge:latest
     environment:
-      SPRING_ACTIVE_PROFILE: docker
+      LOG_DIRECTORY: /log
+      SPRING_ACTIVE_PROFILE: docker,log_file
       SPRING_MAIN_BANNER_MODE: off
     deploy:
       mode: replicated
@@ -18,6 +19,8 @@ services:
           memory: 32M
     networks:
       - observability_tutorial
+    volumes:
+      - observability_tutorial:/log
   burger-maker:
     image: observability-tutorial-burger-maker:latest
     build:
@@ -27,7 +30,8 @@ services:
         application_name: burger_maker
     environment:
       FRIDGE_HOST: fridge
-      SPRING_ACTIVE_PROFILE: docker
+      LOG_DIRECTORY: /log
+      SPRING_ACTIVE_PROFILE: docker,log_file
       SPRING_MAIN_BANNER_MODE: off
     deploy:
       mode: replicated
@@ -45,6 +49,12 @@ services:
       - "8080:8080"
     networks:
       - observability_tutorial
+    volumes:
+      - observability_tutorial:/log
+volumes:
+  observability_tutorial:
+    external: true
+    name: observability_tutorial
 
 networks:
   observability_tutorial:
