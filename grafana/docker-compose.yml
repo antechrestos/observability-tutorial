@@ -4,12 +4,39 @@ version: '3.9'
 services:
   grafana:
     image: grafana/grafana-oss:9.2.0
+    ports:
+      - "3000:3000"
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: "Admin"
+    volumes:
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    networks:
+      - observability_tutorial
 
   loki:
     image: grafana/loki:2.6.1
+    volumes:
+      - ./loki:/etc/loki:ro
+    command: -config.file=/etc/loki/config.yml
+    networks:
+      - observability_tutorial
 
   promtail:
     image: grafana/promtail:2.6.1
+    volumes:
+      - observability_tutorial:/logs:ro
+      - ./promtail:/etc/promtail:ro
+    command: -config.file=/etc/promtail/config.yml
+    networks:
+      - observability_tutorial
 
-  prometheus:
-    image: bitnami/prometheus:2.39.1
+volumes:
+  observability_tutorial:
+    external: true
+    name: observability_tutorial
+
+networks:
+  observability_tutorial:
+    external: true
+    name: observability_tutorial
