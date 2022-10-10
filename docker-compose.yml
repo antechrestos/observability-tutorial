@@ -7,6 +7,7 @@ services:
       LOG_DIRECTORY: /log
       SPRING_ACTIVE_PROFILE: docker,log_file
       SPRING_MAIN_BANNER_MODE: off
+      SPRING_SLEUTH_OTEL_EXPORTER_OTLP_ENDPOINT: "http://tempo:4317"
     deploy:
       mode: replicated
       replicas: 1
@@ -33,6 +34,7 @@ services:
       LOG_DIRECTORY: /log
       SPRING_ACTIVE_PROFILE: docker,log_file
       SPRING_MAIN_BANNER_MODE: off
+      SPRING_SLEUTH_OTEL_EXPORTER_OTLP_ENDPOINT: "http://tempo:4317"
     deploy:
       mode: replicated
       replicas: 1

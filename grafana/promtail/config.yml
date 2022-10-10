@@ -23,6 +23,8 @@ scrape_configs:
           expressions:
             application: '"service.name"'
             date: '"@timestamp"'
+            httpMethod: '"request.method"'
+            httpPath: '"request.uri"'
       - replace:
           expression: ".*([Z])$"
           source: "date"
@@ -38,3 +40,5 @@ scrape_configs:
           format: RFC3339Nano
       - labels:
           application:
+          httpMethod:
+          httpPath:

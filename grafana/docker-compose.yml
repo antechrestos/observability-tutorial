@@ -31,6 +31,14 @@ services:
     networks:
       - observability_tutorial
 
+  tempo:
+    image: grafana/tempo:1.5.0
+    volumes:
+      - ./tempo:/etc/tempo:ro
+    command: --config.file=/etc/tempo/config.yml
+    networks:
+      - observability_tutorial
+
 volumes:
   observability_tutorial:
     external: true
