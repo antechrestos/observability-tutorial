@@ -1,0 +1,12 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: "spring-applications"
+    metrics_path: "/actuator/prometheus"
+    scheme: "http"
+    static_configs:
+      - targets:
+        - "burger-maker:8080"
+        - "fridge:8080"

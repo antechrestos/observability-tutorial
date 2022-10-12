@@ -39,6 +39,13 @@ services:
     networks:
       - observability_tutorial
 
+  prometheus:
+    image: bitnami/prometheus:2.39.1
+    volumes:
+      - ./prometheus:/etc/prometheus:ro
+    networks:
+      - observability_tutorial
+
 volumes:
   observability_tutorial:
     external: true
