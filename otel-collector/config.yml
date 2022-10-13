@@ -14,6 +14,10 @@ processors:
     timeout: 2s
 
 exporters:
+  otlp:
+    endpoint: http://tempo:4317
+    tls:
+      insecure: true
   prometheus:
     endpoint: 0.0.0.0:8889
 
@@ -23,3 +27,7 @@ service:
       receivers: [otlp]
       processors: [batch]
       exporters: [ prometheus ]
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlp]

@@ -18,8 +18,7 @@ services:
       LOG_DIRECTORY: /log
       SPRING_ACTIVE_PROFILE: docker,log_file
       SPRING_MAIN_BANNER_MODE: off
-      SPRING_SLEUTH_OTEL_EXPORTER_OTLP_ENDPOINT: "http://tempo:4317"
-      OTEL_TRACES_EXPORTER: "none"
+      OTEL_TRACES_EXPORTER: "otlp"
       OTEL_METRICS_EXPORTER: "otlp"
       OTEL_LOGS_EXPORTER: "none"
       OTEL_EXPORTER_OTLP_TIMEOUT: "2s"
@@ -53,8 +52,7 @@ services:
       LOG_DIRECTORY: /log
       SPRING_ACTIVE_PROFILE: docker,log_file
       SPRING_MAIN_BANNER_MODE: off
-      SPRING_SLEUTH_OTEL_EXPORTER_OTLP_ENDPOINT: "http://tempo:4317"
-      OTEL_TRACES_EXPORTER: "none"
+      OTEL_TRACES_EXPORTER: "otlp"
       OTEL_METRICS_EXPORTER: "otlp"
       OTEL_LOGS_EXPORTER: "none"
       OTEL_EXPORTER_OTLP_TIMEOUT: "2s"
