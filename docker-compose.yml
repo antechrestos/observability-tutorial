@@ -1,13 +1,31 @@
 version: "3.8"
 
 services:
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.62.0
+    command: [ "--config=/etc/otel-collector/config.yml" ]
+    ports:
+      - "8889:8889"
+    volumes:
+      - ./otel-collector:/etc/otel-collector/
+    networks:
+      - observability_tutorial
+
   fridge:
     image: observability-tutorial-fridge:latest
     environment:
+      JVM_OPTIONS: "-javaagent:/opt/opentelemetry-javaagent.jar"
       LOG_DIRECTORY: /log
       SPRING_ACTIVE_PROFILE: docker,log_file
       SPRING_MAIN_BANNER_MODE: off
       SPRING_SLEUTH_OTEL_EXPORTER_OTLP_ENDPOINT: "http://tempo:4317"
+      OTEL_TRACES_EXPORTER: "none"
+      OTEL_METRICS_EXPORTER: "otlp"
+      OTEL_LOGS_EXPORTER: "none"
+      OTEL_EXPORTER_OTLP_TIMEOUT: "2s"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector:4317"
+      OTEL_RESOURCE_ATTRIBUTES: "service.name=fridge,application.name=burger_maker"
+      GLOBAL_APPLICATION_NAME: "burger_maker"
     deploy:
       mode: replicated
       replicas: 1
@@ -30,11 +48,19 @@ services:
         jar_file: ./burger-maker-service/target/burger-maker-service-dev-SNAPSHOT.jar
         application_name: burger_maker
     environment:
+      JVM_OPTIONS: "-javaagent:/opt/opentelemetry-javaagent.jar"
       FRIDGE_HOST: fridge
       LOG_DIRECTORY: /log
       SPRING_ACTIVE_PROFILE: docker,log_file
       SPRING_MAIN_BANNER_MODE: off
       SPRING_SLEUTH_OTEL_EXPORTER_OTLP_ENDPOINT: "http://tempo:4317"
+      OTEL_TRACES_EXPORTER: "none"
+      OTEL_METRICS_EXPORTER: "otlp"
+      OTEL_LOGS_EXPORTER: "none"
+      OTEL_EXPORTER_OTLP_TIMEOUT: "2s"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector:4317"
+      OTEL_RESOURCE_ATTRIBUTES: "service.name=burger_maker,application.name=burger_maker"
+      GLOBAL_APPLICATION_NAME: "burger_maker"
     deploy:
       mode: replicated
       replicas: 1
