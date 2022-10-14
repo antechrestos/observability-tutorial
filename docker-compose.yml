@@ -8,6 +8,7 @@ services:
       - "8889:8889"
     volumes:
       - ./otel-collector:/etc/otel-collector/
+      - observability_tutorial:/logs
     networks:
       - observability_tutorial
 
